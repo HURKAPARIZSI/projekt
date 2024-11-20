@@ -1,28 +1,23 @@
-<?php
+    <?php
 
-class ModelBase {
-    protected $db;
 
-    public function __construct() {
-        $this->connectDB();
+
+function connect() {
+    $host = 'localhost';
+    $user = 'dualis';
+    $passwd = 'dualis';
+    $db = 'dualis';
+    $port = '8889';
+    // Próbáljuk meg csatlakozni az adatbázishoz
+    $connection = new mysqli($host, $user, $passwd, $db, $port);
+    //mysqli_connect(....)
+    // Hibaellenőrzés
+    if ($connection->connect_error) {
+        die('Csatlakozási hiba: ' . $connection->connect_error);
     }
 
-    // Adatbázis-kapcsolat létrehozása
-    protected function connectDB() {
-        $this->db = new mysqli("localhost", "felhasznalonev", "jelszo", "adatbazis_nev");
-
-        if ($this->db->connect_error) {
-            die("Kapcsolódási hiba: " . $this->db->connect_error);
-        }
-
-        // connect tárolt eljárás hívása (ha szükséges)
-        $this->db->query("CALL connect()");
-    }
-
-    // Az adatbázis-kapcsolat bezárása
-    public function closeConnection() {
-        if ($this->db) {
-            $this->db->close();
-        }
-    }
+    return $connection;
 }
+
+
+?>
