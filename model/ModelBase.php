@@ -1,10 +1,13 @@
 <?php
+
+
+
 function connect() {
     $host = 'localhost';
-    $user = 'root';
-    $passwd = 'root';
+    $user = 'dualis';
+    $passwd = 'dualis';
     $db = 'dualis';
-    $port = '3306';
+    $port = '8889';
     // Próbáljuk meg csatlakozni az adatbázishoz
     $connection = new mysqli($host, $user, $passwd, $db, $port);
     //mysqli_connect(....)
