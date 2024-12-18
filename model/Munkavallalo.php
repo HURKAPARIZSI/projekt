@@ -6,7 +6,15 @@ class Munkavallalo{
     private string $adojel;
     private string $szulDatum;
     private int $id;
+    public function getNev(): string {return $this->nev;}
 
+	public function getAdojel(): string {return $this->adojel;}
+
+	public function getSzulDatum(): string {return $this->szulDatum;}
+
+	public function getId(): int {return $this->id;}
+
+	
 
     public function __construct(int $id){
         try{
@@ -15,7 +23,7 @@ class Munkavallalo{
             $this->id = (int)mysqli_real_escape_string($kapcs, $id);
             $this->id = strip_tags($this->id);
             //SQL parancs összerakása
-            $sql = 'CALL read(' . $this->id . ')';
+            $sql = 'CALL readMunkavallalo('.$this->id.')';
             //SQL parancs lefuttatása
             $adatok = mysqli_query($kapcs, $sql);
             //Visszajött adatok kezelése
@@ -28,6 +36,39 @@ class Munkavallalo{
         }
         catch(Exception $ex){
             print $ex->getMessage();
+        }
+    }
+
+    //Az összes munkavállaó lekérdezése
+    static function getAllMunkavallalo(){
+        try{
+            $kapcs = connect();
+            $sql = 'CALL getAllMunkavallalo';
+            $dbResult = mysqli_query($kapcs, $sql);
+
+            $data = mysqli_fetch_all($dbResult, MYSQLI_ASSOC);
+            mysqli_close($kapcs);
+
+            return $data;
+        }catch (Exception $ex) {
+            echo $ex->getMessage();
+            return false;
+        }
+    }
+
+    static function getMunkavallaloById(int $id){
+        try{
+            $kapcs = connect();
+            $sql = 'CALL readMunkavallalo('.$id.')';
+            $dbResult = mysqli_query($kapcs, $sql);
+
+            $data = mysqli_fetch_all($dbResult,MYSQLI_ASSOC);
+
+            //Elég az első elemet return-elni
+            return $data[0];
+        }catch (Exception $ex) {
+            echo $ex->getMessage();
+            return false;
         }
     }
 
@@ -44,6 +85,7 @@ class Munkavallalo{
             $sql = "CALL createMunkavallalo( \"$adojel\",\"$szulDatum \",\"$nev\")";
 
             $result = mysqli_query($kapcs, $sql);
+            mysqli_close($kapcs);
             
             return true;
 
@@ -54,7 +96,7 @@ class Munkavallalo{
         }
     }
 
-    static function update(int $id, string $adojel, string $szulDatum, string $nev)
+    static function updateMunkavallalo(int $id, string $adojel, string $szulDatum, string $nev)
     {
 
         try {
@@ -65,13 +107,33 @@ class Munkavallalo{
             mysqli_query($kapcs, $sql);
 
             echo "Adat módosítva";
+            mysqli_close($kapcs);
+            return true;
         } catch (Exception $ex) {
             echo $ex->getMessage();
+            return false;
         }
+    }
+
+    static function deleteMunkavallalo(int $id){
+        try{
+            $kapcs = connect();
+            $sql = 'CALL deleteMunkavallalo(' . $id . ')';
+
+            mysqli_query($kapcs, $sql);
+            mysqli_close($kapcs);
+            return true;
+
+        } catch (Exception $ex) {
+            echo $ex->getMessage();
+            return false;
+        }    
     }
 }
 
 //Munkavallalo::addMunkavallal("14543462", "1998-04-23", "Laci");
 
 //Munkavallalo::update(1, "14543462", "1998-04-23", "Tibi");
+// Munkavallalo::getMunkavallaloById(2);
+
 ?>

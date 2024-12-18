@@ -10,5 +10,54 @@ class MunkavallaloController{
         ];
         echo json_encode($response);
     }
+
+    static function getAllMunkavallalo(){
+        $result = MunkavallaloService::getAllMunkavallalo();
+        $response = [
+            "status" => $result["status"] ? "success" : "error",
+            "httpCode" => $result["httpStatusCode"],
+            "message" => $result["message"],
+            "body" => $result["data"] ?? ""
+        ];
+        echo json_encode($response);
+    }
+
+    static function getMunkavallaloById(int $id){
+        $result = MunkavallaloService::getMunkavallaloById($id);
+        $response = [
+            "status" => $result["status"] ? "success" : "error",
+            "httpCode" => $result["httpStatusCode"],
+            "message" => $result["message"],
+            "body" => $result["data"] ?? ""
+        ];
+        echo json_encode($response);
+    }
+
+    static function updateMunkavallalo(int $id, string $adojel, string $szulDatum, string $nev){
+        $result = MunkavallaloService::updateMunkavallalo($id, $adojel, $szulDatum, $nev);
+        $response = [
+            "status" => $result["status"] ? "success" : "error",
+            "httpCode" => $result["httpStatusCode"],
+            "message" => $result["message"]
+        ];
+        echo json_encode($response);
+    }
+
+    static function deleteMunkavallalo(int $id){
+        $result = MunkavallaloService::deleteMunkavallalo($id);
+        $response = [
+            "status" => $result["status"] ? "success" : "error",
+            "httpCode" => $result["httpStatusCode"],
+            "message" => $result["message"]
+        ];
+        echo json_encode($response);
+    }
+    
 }
-MunkavallaloController::addMunkavallalo("14543462","2005-03-06","tomi");
+//Endpointok helyi tesztelése
+
+// MunkavallaloController::addMunkavallalo("14543462","2005-03-06","tomi");
+// MunkavallaloController::getAllMunkavallalo();
+// MunkavallaloController::getMunkavallaloById(3);
+// MunkavallaloController::updateMunkavallalo(1,"14543462","2005-03-06","Tibor");
+MunkavallaloController::deleteMunkavallalo(2);
