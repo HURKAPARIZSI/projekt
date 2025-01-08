@@ -1,0 +1,1 @@
+Ez a beléptető rendszer dokumentációja.
