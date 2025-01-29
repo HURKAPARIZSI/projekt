@@ -6,14 +6,6 @@ class LogService{
         return Log::createLog($direction, $userId);
     }
 
-    public function getById(int $id): ?Log {
-        return Log::getById($id);
-    }
-
-    public function deleteById(int $id): bool {
-        return Log::deleteById($id);
-    }
-
 }
 /**
  * Java:

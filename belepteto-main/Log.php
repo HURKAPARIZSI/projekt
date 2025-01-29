@@ -31,11 +31,14 @@ class ErrorLog {
     }
 
     public function log(): bool{
-        $error = $this->date . ': ' . $this->message . '\n';
+        $error = $this->date . ': ' . $this->message . '
+';
         for($i = 0; $i < count($this->details); $i++){
-            $error .= $this->details[$i] . '\n';
+            $error .= $this->details[$i] . '
+';
         }
-        $error .= '\n';
+        $error .= '
+';
         try{
             $content = file_get_contents(ErrorLog::$logFileName);
             $content .= $error; //$content = $content . $error;
@@ -49,27 +52,6 @@ class ErrorLog {
     }
 
 }
-
-
-
-?>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

@@ -1,0 +1,19 @@
+2025-01-08 09:40:32: Hiba történt.
+A task = create... Try blokkban vagyunk.
+Nem volt isnumeric, 500-as hiba
+
+2025-01-08 09:43:00: Hiba történt.
+A task = create... Try blokkban vagyunk.
+Nem volt isnumeric, 500-as hiba
+direction: alma
+userId: 1
+
+2025-01-08 09:44:47: Hiba történt.
+Task nem volt create, 404-es error
+post request: creae
+
+2025-01-08 09:45:08: Hiba történt.
+A task = create... Try blokkban vagyunk.
+A konvertálások sikeresek voltak.
+A service lofutott
+
