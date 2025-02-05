@@ -1,40 +1,44 @@
 <?php
-require_once('ModelBase.php');
+require_once 'ModelBase.php';
 
-class Munkavallalo{
-
-    private string $nev;
-    private string $adojel;
-    private string $szulDatum;
-    private int $id;
-
-
-    public function __construct(int $id){
-        try{
-            $kapcs = connect();
-            //biztonsági lépések
-            $this->id = (int)mysqli_real_escape_string($kapcs, $id);
-            $this->id = strip_tags($this->id);
-            //SQL parancs összerakása
-            $sql = 'CALL read(' . $this->id . ')';
-            //SQL parancs lefuttatása
-            $adatok = mysqli_query($kapcs, $sql);
-            //Visszajött adatok kezelése
-            $fetcheltAdatok = mysqli_fetch_assoc($adatok);
-            //$fetcheltAdatok['id'] $fetcheltAdatok['nev']...
-            $this->adojel = $fetcheltAdatok['adojel'];//NAGYON FONTOS!!! Adattábla mezőnév
-            $this->nev = $fetcheltAdatok['nev'];
-            $this->szulDatum = $fetcheltAdatok['szuldatum'];
-            mysqli_close($kapcs);
-        }
-        catch(Exception $ex){
-            print $ex->getMessage();
-        }
+class Munkavallalo extends ModelBase {
+    public function getMunkavallaloById($id) {
+        $stmt = $this->pdo->prepare("CALL GetMunkavallaloById(:id)");
+        $stmt->execute(['id' => $id]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
+    public function createMunkavallalo($data) {
+        $stmt = $this->pdo->prepare("CALL CreateMunkavallalo(:adojel, :szul_datum, :nev, :nem, :role)");
+        return $stmt->execute([
+            'adojel' => $data['adojel'],
+            'szul_datum' => $data['szul_datum'],
+            'nev' => $data['nev'],
+            'nem' => $data['nem'],
+            'role' => $data['role']
+        ]);
+    }
+
+    public function updateMunkavallalo($id, $data) {
+        $stmt = $this->pdo->prepare("CALL UpdateMunkavallalo(:id, :adojel, :szul_datum, :nev, :nem, :role)");
+        return $stmt->execute([
+            'id' => $id,
+            'adojel' => $data['adojel'],
+            'szul_datum' => $data['szul_datum'],
+            'nev' => $data['nev'],
+            'nem' => $data['nem'],
+            'role' => $data['role']
+        ]);
+    }
+
+    public function deleteMunkavallalo($id) {
+        $stmt = $this->pdo->prepare("CALL DeleteMunkavallalo(:id)");
+        return $stmt->execute(['id' => $id]);
+    }
+
+    public function getAllMunkavallalo() {
+        $stmt = $this->pdo->query("CALL GetAllMunkavallalo()");
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
-
-
-
-
 ?>

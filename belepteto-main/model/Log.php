@@ -1,51 +1,16 @@
 <?php
-require_once('ModelBase.php');
-class Log {
-    private int $id;
-    private int $userId;
-    private string $date;
-    private int $direction;
+require_once 'ModelBase.php';
 
-
-    public static function createLog($direction, $userId):bool{
-        try{
-            $conn = connect();
-            $sql = 'CALL `createLog`(' . $direction . ', ' . $userId . ', "' . time() . '");';
-            mysqli_query($conn, $sql);
-            return true;
-        }
-        catch(Exception $ex){
-            print $ex->getMessage();
-            return false;
-        }
+class Log extends ModelBase {
+    public function logEvent($munkavallalo_id, $esemeny) {
+        $stmt = $this->pdo->prepare("INSERT INTO log (munkavallalo_id, esemeny, datum) VALUES (:munkavallalo_id, :esemeny, NOW())");
+        return $stmt->execute(['munkavallalo_id' => $munkavallalo_id, 'esemeny' => $esemeny]);
     }
 
-    // Getter metódusok
-    public function getId(): int {
-        return $this->id;
+    public function getLogsByMunkavallaloId($munkavallalo_id) {
+        $stmt = $this->pdo->prepare("SELECT * FROM log WHERE munkavallalo_id = :munkavallalo_id ORDER BY datum DESC");
+        $stmt->execute(['munkavallalo_id' => $munkavallalo_id]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-
-    public function getUserId(): int {
-        return $this->userId;
-    }
-
-    public function getDate(): string {
-        return $this->date;
-    }
-
-    public function getDirection(): int {
-        return $this->direction;
-    }
-
-    // Setter metódusok
-
-    public function setUserId(int $userId): void {
-        $this->userId = $userId;
-    }
-
-    public function setDate(string $date): void {
-        $this->date = $date;
-    }
-
 }
 ?>

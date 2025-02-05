@@ -2,9 +2,7 @@
 require_once('../model/Log.php');
 class LogService{
 
-    public function createLog($direction, $userId): bool{
-        return Log::createLog($direction, $userId);
-    }
+
 
 }
 /**
